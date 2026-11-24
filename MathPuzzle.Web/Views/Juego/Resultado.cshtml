@@ -1,0 +1,524 @@
+﻿@{
+    ViewData["Title"] = "Resultados";
+
+    string jugador = ViewBag.Jugador ?? "Jugador";
+
+    int puntaje = ViewBag.Puntaje ?? 0;
+    int aciertos = ViewBag.Aciertos ?? 0;
+    int totalPreguntas = ViewBag.TotalPreguntas ?? 10;
+
+    int incorrectas = totalPreguntas - aciertos;
+
+    int porcentaje = totalPreguntas > 0
+        ? (int)Math.Round(
+            (double)aciertos / totalPreguntas * 100
+          )
+        : 0;
+
+    string mensaje = "";
+    string descripcion = "";
+
+    if (porcentaje == 100)
+    {
+        mensaje = "¡PERFECCIÓN MATEMÁTICA!";
+        descripcion = "Has demostrado un dominio excepcional. ¡Todas tus respuestas fueron correctas!";
+    }
+    else if (porcentaje >= 70)
+    {
+        mensaje = "¡EXCELENTE TRABAJO!";
+        descripcion = "Tu lógica y rapidez te han llevado a conseguir un gran resultado.";
+    }
+    else if (porcentaje >= 40)
+    {
+        mensaje = "¡BUEN INTENTO!";
+        descripcion = "Vas por buen camino. Cada desafío es una oportunidad para mejorar.";
+    }
+    else
+    {
+        mensaje = "¡SIGUE PRACTICANDO!";
+        descripcion = "Las matemáticas se dominan con práctica y perseverancia. ¡Inténtalo de nuevo!";
+    }
+}
+
+<section class="resultado">
+
+    <div class="resultado-contenedor">
+
+        <!-- ENCABEZADO -->
+        <div class="resultado-encabezado">
+
+            <div class="resultado-icono">
+                ∑
+            </div>
+
+            <p class="resultado-etiqueta">
+                MATH PUZZLE · DESAFÍO COMPLETADO
+            </p>
+
+            <h1>
+                DESAFÍO
+                <span>FINALIZADO</span>
+            </h1>
+
+            <p class="resultado-bienvenida">
+                ¡Felicidades, <strong>@jugador</strong>!
+                Has completado tu desafío matemático.
+            </p>
+
+        </div>
+
+        <!-- TARJETA PRINCIPAL -->
+        <div class="resultado-tarjeta">
+
+            <!-- PUNTUACIÓN FINAL -->
+            <div class="resultado-puntaje">
+
+                <p class="resultado-subtitulo">
+                    TU PUNTUACIÓN FINAL
+                </p>
+
+                <h2>@puntaje</h2>
+
+                <span>PUNTOS</span>
+
+                <div class="resultado-linea"></div>
+
+                <h3>@mensaje</h3>
+
+                <p>@descripcion</p>
+
+            </div>
+
+            <!-- ESTADÍSTICAS -->
+            <div class="resultado-estadisticas">
+
+                <div class="resultado-estadistica">
+
+                    <span class="estadistica-numero">
+                        @aciertos
+                    </span>
+
+                    <span class="estadistica-texto">
+                        RESPUESTAS CORRECTAS
+                    </span>
+
+                </div>
+
+                <div class="resultado-estadistica">
+
+                    <span class="estadistica-numero">
+                        @incorrectas
+                    </span>
+
+                    <span class="estadistica-texto">
+                        INCORRECTAS O SIN RESPONDER
+                    </span>
+
+                </div>
+
+                <div class="resultado-estadistica">
+
+                    <span class="estadistica-numero">
+                        @porcentaje%
+                    </span>
+
+                    <span class="estadistica-texto">
+                        PORCENTAJE DE ACIERTOS
+                    </span>
+
+                </div>
+
+            </div>
+
+            <!-- PRECISIÓN MATEMÁTICA -->
+            <div class="resultado-progreso">
+
+                <div class="resultado-progreso-texto">
+
+                    <span>
+                        PRECISIÓN MATEMÁTICA
+                    </span>
+
+                    <strong>
+                        @porcentaje%
+                    </strong>
+
+                </div>
+
+                <div class="resultado-progreso-fondo">
+
+                    <div class="resultado-progreso-barra"
+                         style="width: @(porcentaje)%">
+                    </div>
+
+                </div>
+
+                <p>
+                    Respondiste correctamente
+                    @aciertos de @totalPreguntas preguntas.
+                </p>
+
+            </div>
+
+            <!-- BOTONES DE NAVEGACIÓN -->
+            <div class="resultado-acciones">
+
+                <!-- JUGAR NUEVAMENTE -->
+                <a asp-controller="Juego"
+                   asp-action="Index"
+                   class="resultado-boton-principal">
+
+                    JUGAR DE NUEVO
+                    <span aria-hidden="true">→</span>
+
+                </a>
+
+                <!-- VER RANKING -->
+                <a asp-controller="Ranking"
+                   asp-action="Index"
+                   class="resultado-boton-ranking">
+
+                    VER RANKING
+                    <span aria-hidden="true">🏆</span>
+
+                </a>
+
+                <!-- VOLVER AL INICIO -->
+                <a asp-controller="Home"
+                   asp-action="Index"
+                   class="resultado-boton-secundario">
+
+                    VOLVER AL INICIO
+
+                </a>
+
+            </div>
+
+        </div>
+
+        <p class="resultado-pie">
+            EL CONOCIMIENTO CRECE CON CADA DESAFÍO
+        </p>
+
+    </div>
+
+</section>
+
+<style>
+
+    /* =========================================
+           PANTALLA DE RESULTADOS
+           ========================================= */
+
+    .resultado {
+        min-height: 85vh;
+        padding: 70px 20px;
+        background: linear-gradient( 120deg, #f5f0e8 0%, #ebdfcb 100% );
+    }
+
+    .resultado-contenedor {
+        width: 100%;
+        max-width: 850px;
+        margin: 0 auto;
+    }
+
+    /* ENCABEZADO */
+
+    .resultado-encabezado {
+        text-align: center;
+        margin-bottom: 40px;
+    }
+
+    .resultado-icono {
+        color: #a7834e;
+        font-size: 50px;
+        margin-bottom: 15px;
+    }
+
+    .resultado-etiqueta {
+        color: #987b50;
+        font-size: 12px;
+        letter-spacing: 3px;
+        margin-bottom: 20px;
+    }
+
+    .resultado-encabezado h1 {
+        color: #14212b;
+        font-size: clamp(34px, 6vw, 60px);
+        font-weight: 500;
+        line-height: 1.2;
+        margin-bottom: 20px;
+    }
+
+        .resultado-encabezado h1 span {
+            display: block;
+            color: #a7834e;
+        }
+
+    .resultado-bienvenida {
+        color: #565656;
+        font-size: 17px;
+        line-height: 1.7;
+    }
+
+        .resultado-bienvenida strong {
+            color: #14212b;
+            overflow-wrap: anywhere;
+        }
+
+    /* TARJETA PRINCIPAL */
+
+    .resultado-tarjeta {
+        background: #ffffff;
+        border: 1px solid #e2d5c0;
+        border-radius: 12px;
+        padding: clamp(25px, 5vw, 55px);
+        box-shadow: 0 15px 45px rgba( 20, 33, 43, 0.08 );
+    }
+
+    /* PUNTUACIÓN */
+
+    .resultado-puntaje {
+        text-align: center;
+        padding-bottom: 40px;
+    }
+
+    .resultado-subtitulo {
+        color: #987b50;
+        font-size: 12px;
+        letter-spacing: 3px;
+        margin-bottom: 15px;
+    }
+
+    .resultado-puntaje h2 {
+        color: #14212b;
+        font-size: clamp(65px, 10vw, 100px);
+        font-weight: 500;
+        line-height: 1.1;
+        margin: 0;
+    }
+
+    .resultado-puntaje > span {
+        display: block;
+        color: #a7834e;
+        font-size: 14px;
+        letter-spacing: 4px;
+        margin-top: 10px;
+    }
+
+    .resultado-linea {
+        width: 70px;
+        height: 2px;
+        background: #a7834e;
+        margin: 30px auto;
+    }
+
+    .resultado-puntaje h3 {
+        color: #14212b;
+        font-size: 26px;
+        font-weight: 500;
+        margin-bottom: 15px;
+    }
+
+    .resultado-puntaje p:last-child {
+        color: #666666;
+        font-size: 15px;
+        line-height: 1.8;
+        max-width: 500px;
+        margin: 0 auto;
+    }
+
+    /* ESTADÍSTICAS */
+
+    .resultado-estadisticas {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 15px;
+        border-top: 1px solid #e9ddca;
+        border-bottom: 1px solid #e9ddca;
+        padding: 35px 0;
+    }
+
+    .resultado-estadistica {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 12px;
+    }
+
+    .estadistica-numero {
+        color: #14212b;
+        font-size: 42px;
+    }
+
+    .estadistica-texto {
+        color: #987b50;
+        font-size: 11px;
+        letter-spacing: 1px;
+        line-height: 1.5;
+    }
+
+    /* BARRA DE PROGRESO */
+
+    .resultado-progreso {
+        padding-top: 35px;
+        margin-bottom: 40px;
+    }
+
+    .resultado-progreso-texto {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 15px;
+        margin-bottom: 15px;
+    }
+
+        .resultado-progreso-texto span {
+            color: #987b50;
+            font-size: 12px;
+            letter-spacing: 2px;
+        }
+
+        .resultado-progreso-texto strong {
+            color: #14212b;
+            font-size: 20px;
+        }
+
+    .resultado-progreso-fondo {
+        height: 8px;
+        background: #e9ddca;
+        border-radius: 20px;
+        overflow: hidden;
+    }
+
+    .resultado-progreso-barra {
+        height: 100%;
+        background: #a7834e;
+        border-radius: 20px;
+        transition: width 1s ease;
+    }
+
+    .resultado-progreso > p {
+        color: #777777;
+        font-size: 13px;
+        margin-top: 15px;
+    }
+
+    /* =========================================
+           BOTONES DE NAVEGACIÓN
+           ========================================= */
+
+    .resultado-acciones {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 15px;
+    }
+
+    .resultado-boton-principal,
+    .resultado-boton-ranking,
+    .resultado-boton-secundario {
+        min-height: 55px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 12px;
+        padding: 15px 18px;
+        border-radius: 6px;
+        font-family: Georgia, 'Times New Roman', serif;
+        font-size: 12px;
+        letter-spacing: 1px;
+        text-align: center;
+        text-decoration: none;
+        transition: all 0.3s ease;
+    }
+
+    /* JUGAR DE NUEVO */
+
+    .resultado-boton-principal {
+        background: #14212b;
+        color: #ffffff;
+        border: 1px solid #14212b;
+    }
+
+        .resultado-boton-principal:hover {
+            background: #a7834e;
+            border-color: #a7834e;
+            color: #ffffff;
+        }
+
+    /* VER RANKING */
+
+    .resultado-boton-ranking {
+        background: #a7834e;
+        color: #ffffff;
+        border: 1px solid #a7834e;
+    }
+
+        .resultado-boton-ranking:hover {
+            background: #8c6939;
+            border-color: #8c6939;
+            color: #ffffff;
+        }
+
+    /* VOLVER AL INICIO */
+
+    .resultado-boton-secundario {
+        grid-column: 1 / -1;
+        background: transparent;
+        color: #14212b;
+        border: 1px solid #a7834e;
+    }
+
+        .resultado-boton-secundario:hover {
+            background: #f1e8d9;
+            color: #14212b;
+        }
+
+    .resultado-acciones a:focus-visible {
+        outline: 2px solid #a7834e;
+        outline-offset: 3px;
+    }
+
+    /* PIE DE PÁGINA */
+
+    .resultado-pie {
+        text-align: center;
+        color: #987b50;
+        font-size: 11px;
+        letter-spacing: 3px;
+        margin-top: 35px;
+    }
+
+    /* =========================================
+           DISEÑO RESPONSIVE
+           ========================================= */
+
+    @@media (max-width: 650px) {
+
+        .resultado {
+            padding: 40px 15px;
+        }
+
+        .resultado-estadisticas {
+            gap: 10px;
+        }
+
+        .estadistica-numero {
+            font-size: 30px;
+        }
+
+        .estadistica-texto {
+            font-size: 9px;
+        }
+
+        .resultado-acciones {
+            grid-template-columns: 1fr;
+        }
+
+        .resultado-boton-secundario {
+            grid-column: auto;
+        }
+    }
+
+</style>

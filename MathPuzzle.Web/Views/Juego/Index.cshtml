@@ -1,0 +1,327 @@
+﻿@{
+    ViewData["Title"] = "Comenzar a jugar";
+}
+
+<section class="juego-inicio">
+
+    <div class="juego-inicio-contenedor">
+
+        <!-- INFORMACIÓN DEL JUEGO -->
+        <div class="juego-presentacion">
+
+            <p class="juego-etiqueta">
+                MATH PUZZLE · DESAFÍO MATEMÁTICO
+            </p>
+
+            <h1>
+                ¿LISTO PARA
+                <span>EL DESAFÍO?</span>
+            </h1>
+
+            <p class="juego-descripcion">
+                Pon a prueba tu conocimiento, demuestra
+                tu rapidez y resuelve cada acertijo
+                antes de que se agote el tiempo.
+            </p>
+
+            <div class="juego-caracteristicas">
+
+                <div class="juego-caracteristica">
+                    <strong>10</strong>
+                    <span>Preguntas</span>
+                </div>
+
+                <div class="juego-caracteristica">
+                    <strong>15s</strong>
+                    <span>Por pregunta</span>
+                </div>
+
+                <div class="juego-caracteristica">
+                    <strong>100</strong>
+                    <span>Puntos por acierto</span>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- FORMULARIO DEL JUGADOR -->
+        <div class="juego-formulario">
+
+            <div class="juego-formulario-icono">
+                ∑
+            </div>
+
+            <p class="juego-paso">
+                PASO 01 · IDENTIFICACIÓN
+            </p>
+
+            <h2>Comienza tu aventura</h2>
+
+            <p class="juego-formulario-descripcion">
+                Ingresa tu nombre para iniciar
+                una nueva partida.
+            </p>
+
+            @if (ViewBag.Error != null)
+            {
+                <div class="alert alert-danger"
+                     role="alert">
+                    @ViewBag.Error
+                </div>
+            }
+
+            <form asp-controller="Juego"
+                  asp-action="Iniciar"
+                  method="post">
+
+                <div class="juego-campo">
+
+                    <label for="nombre">
+                        Nombre del jugador
+                    </label>
+
+                    <input type="text"
+                           id="nombre"
+                           name="nombre"
+                           class="juego-input"
+                           placeholder="Escribe tu nombre"
+                           maxlength="40"
+                           required
+                           autocomplete="nickname" />
+
+                </div>
+
+                <p class="juego-nota">
+                    No necesitas registrarte ni crear
+                    una cuenta para jugar.
+                </p>
+
+                <button type="submit"
+                        class="juego-boton">
+
+                    COMENZAR DESAFÍO
+                    <span aria-hidden="true">→</span>
+
+                </button>
+
+            </form>
+
+            <a asp-controller="Home"
+               asp-action="Index"
+               class="juego-volver">
+                ← Volver al inicio
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+<style>
+
+    /* =====================================
+       PANTALLA DE INICIO DEL JUEGO
+       ===================================== */
+
+    .juego-inicio {
+        min-height: 75vh;
+        display: flex;
+        align-items: center;
+        padding: 80px 8%;
+        background: linear-gradient(
+            110deg,
+            #f5f0e8 0%,
+            #eee1cc 100%
+        );
+    }
+
+    .juego-inicio-contenedor {
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: repeat(
+            auto-fit,
+            minmax(min(100%, 350px), 1fr)
+        );
+        gap: 60px;
+        align-items: center;
+    }
+
+    /* PRESENTACIÓN */
+
+    .juego-etiqueta {
+        color: #987b50;
+        font-size: 12px;
+        letter-spacing: 3px;
+        margin-bottom: 25px;
+    }
+
+    .juego-presentacion h1 {
+        color: #14212b;
+        font-size: clamp(42px, 5vw, 72px);
+        font-weight: 500;
+        line-height: 1.1;
+        margin-bottom: 25px;
+    }
+
+    .juego-presentacion h1 span {
+        display: block;
+        color: #a7834e;
+    }
+
+    .juego-descripcion {
+        max-width: 500px;
+        color: #565656;
+        font-size: 18px;
+        line-height: 1.8;
+        margin-bottom: 40px;
+    }
+
+    /* CARACTERÍSTICAS */
+
+    .juego-caracteristicas {
+        display: flex;
+        gap: 30px;
+        flex-wrap: wrap;
+    }
+
+    .juego-caracteristica {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .juego-caracteristica strong {
+        font-size: 32px;
+        color: #14212b;
+    }
+
+    .juego-caracteristica span {
+        color: #987b50;
+        font-size: 13px;
+    }
+
+    /* FORMULARIO */
+
+    .juego-formulario {
+        background-color: #ffffff;
+        padding: clamp(25px, 4vw, 45px);
+        border: 1px solid #e2d5c0;
+        border-radius: 12px;
+        box-shadow: 0 15px 45px rgba(
+            20, 33, 43, 0.08
+        );
+    }
+
+    .juego-formulario-icono {
+        color: #a7834e;
+        font-size: 40px;
+        margin-bottom: 18px;
+    }
+
+    .juego-paso {
+        color: #987b50;
+        font-size: 11px;
+        letter-spacing: 2px;
+        margin-bottom: 15px;
+    }
+
+    .juego-formulario h2 {
+        color: #14212b;
+        font-size: 30px;
+        margin-bottom: 15px;
+    }
+
+    .juego-formulario-descripcion {
+        color: #666666;
+        font-size: 15px;
+        line-height: 1.7;
+        margin-bottom: 30px;
+    }
+
+    /* CAMPO DEL NOMBRE */
+
+    .juego-campo label {
+        display: block;
+        color: #14212b;
+        font-size: 14px;
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+
+    .juego-input {
+        width: 100%;
+        padding: 15px;
+        border: 1px solid #d9c9ae;
+        border-radius: 6px;
+        background-color: #faf8f4;
+        color: #14212b;
+        font-family: Georgia, 'Times New Roman', serif;
+        font-size: 16px;
+        transition: border-color 0.3s ease;
+    }
+
+    .juego-input:focus {
+        outline: none;
+        border-color: #a7834e;
+        box-shadow: 0 0 0 3px rgba(
+            167, 131, 78, 0.15
+        );
+    }
+
+    .juego-nota {
+        color: #777777;
+        font-size: 12px;
+        line-height: 1.6;
+        margin-top: 12px;
+        margin-bottom: 25px;
+    }
+
+    /* BOTÓN PRINCIPAL */
+
+    .juego-boton {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 17px 20px;
+        background-color: #14212b;
+        border: 1px solid #14212b;
+        border-radius: 6px;
+        color: #ffffff;
+        font-family: Georgia, 'Times New Roman', serif;
+        font-size: 14px;
+        letter-spacing: 1px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .juego-boton:hover {
+        background-color: #a7834e;
+        border-color: #a7834e;
+    }
+
+    .juego-boton:focus-visible {
+        outline: 2px solid #a7834e;
+        outline-offset: 3px;
+    }
+
+    /* VOLVER AL INICIO */
+
+    .juego-volver {
+        display: block;
+        text-align: center;
+        margin-top: 25px;
+        color: #987b50;
+        font-size: 14px;
+        text-decoration: none;
+    }
+
+    .juego-volver:hover {
+        color: #14212b;
+    }
+
+</style>

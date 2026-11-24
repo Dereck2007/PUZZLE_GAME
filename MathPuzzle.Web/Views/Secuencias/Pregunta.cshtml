@@ -1,0 +1,63 @@
+@model MathPuzzle.Web.Models.Pregunta
+
+@{
+    ViewData["Title"] = "Desafío de Secuencias";
+
+    int numeroPregunta = Convert.ToInt32(ViewBag.NumeroPregunta);
+    int totalPreguntas = Convert.ToInt32(ViewBag.TotalPreguntas);
+    int puntaje = Convert.ToInt32(ViewBag.Puntaje);
+    int nivel = Convert.ToInt32(ViewBag.Nivel);
+    string jugador = ViewBag.Jugador?.ToString() ?? "Jugador";
+    string dificultad = ViewBag.Dificultad?.ToString() ?? "Inicial";
+    double progreso = totalPreguntas > 0
+        ? (double)(numeroPregunta - 1) / totalPreguntas * 100
+        : 0;
+}
+
+<section class="secuencias-pantalla">
+    <div class="secuencias-contenedor secuencias-partida">
+        <header class="secuencias-encabezado">
+            <div>
+                <span class="secuencias-etiqueta">JUGADOR</span>
+                <h2>@jugador</h2>
+            </div>
+            <div class="secuencias-puntaje">
+                <span class="secuencias-etiqueta">PUNTUACIÓN</span>
+                <strong>@puntaje <small>PTS</small></strong>
+            </div>
+        </header>
+
+        <div class="secuencias-progreso">
+            <div class="secuencias-progreso-texto">
+                <span>RETO @numeroPregunta DE @totalPreguntas</span>
+                <span>NIVEL @nivel · @dificultad.ToUpperInvariant()</span>
+            </div>
+            <div class="secuencias-progreso-fondo">
+                <div class="secuencias-progreso-barra" style="width: @progreso.ToString("0.##", System.Globalization.CultureInfo.InvariantCulture)%"></div>
+            </div>
+        </div>
+
+        <div class="secuencias-tarjeta secuencias-pregunta">
+            <span class="secuencias-etiqueta">ENCUENTRA EL PATRÓN</span>
+            <h1>@Model.Enunciado</h1>
+            <p class="secuencias-instruccion">Selecciona el número que completa la secuencia.</p>
+
+            <form asp-controller="Secuencias" asp-action="Responder" method="post">
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="idPregunta" value="@Model.Id" />
+                <div class="secuencias-opciones">
+                    @for (int i = 0; i < Model.Opciones.Count; i++)
+                    {
+                        <button type="submit" class="secuencias-opcion" name="indiceRespuesta" value="@i">
+                            <span class="secuencias-opcion-letra">@((char)('A' + i))</span>
+                            <span>@Model.Opciones[i]</span>
+                            <span class="secuencias-flecha" aria-hidden="true">?</span>
+                        </button>
+                    }
+                </div>
+            </form>
+        </div>
+
+        <p class="secuencias-nota">Cada respuesta correcta suma 100 puntos. La dificultad aumenta a medida que avanzas.</p>
+    </div>
+</section>

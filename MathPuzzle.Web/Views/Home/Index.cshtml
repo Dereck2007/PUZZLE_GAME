@@ -1,0 +1,132 @@
+﻿@{
+    ViewData["Title"] = "Inicio";
+}
+
+<section class="hero">
+    <div class="hero-content">
+
+        <p class="hero-subtitle">
+            CONOCIMIENTO · LÓGICA · DESAFÍO
+        </p>
+
+        <h1>
+            MATH <span>PUZZLE</span>
+        </h1>
+
+        <h2>DESAFÍA TU MENTE</h2>
+
+        <p class="hero-description">
+            Un juego de preguntas matemáticas donde
+            la lógica, la rapidez y el conocimiento
+            te llevarán al siguiente nivel.
+        </p>
+
+        <div class="hero-buttons">
+
+            <a asp-controller="Juego"
+               asp-action="Index"
+               class="btn-play">
+                Comenzar a jugar
+            </a>
+
+            <a href="#" class="btn-info">
+                Cómo jugar
+            </a>
+
+        </div>
+
+    </div>
+</section>
+
+<section class="secuencias-home" aria-labelledby="secuencias-home-titulo">
+    <div class="secuencias-home-contenido">
+        <p class="secuencias-home-etiqueta">
+            OTRA FORMA DE DESAFIAR TU MENTE
+        </p>
+
+        <h2 id="secuencias-home-titulo">
+            DESAFÍO <span>DE SECUENCIAS</span>
+        </h2>
+
+        <p class="secuencias-home-descripcion">
+            Encuentra el patrón, completa cada secuencia y demuestra tu agilidad lógica en un reto de dificultad progresiva.
+        </p>
+
+        <a asp-controller="Secuencias"
+           asp-action="Index"
+           class="secuencias-home-boton">
+            Comenzar desafío
+            <span aria-hidden="true">→</span>
+        </a>
+    </div>
+
+    <div class="secuencias-home-visual" aria-hidden="true">
+        <p>ENCUENTRA EL PATRÓN</p>
+        <div class="secuencias-home-numeros">
+            <span>02</span>
+            <span>04</span>
+            <span>08</span>
+            <span class="secuencias-home-faltante">?</span>
+        </div>
+        <div class="secuencias-home-nivel">
+            <span>01</span>
+            <span class="secuencias-home-linea"></span>
+            <span>02</span>
+            <span class="secuencias-home-linea"></span>
+            <span>03</span>
+            <small>NIVELES DE DIFICULTAD</small>
+        </div>
+    </div>
+</section>
+
+<section class="math-image-section">
+
+    <img src="~/images/matematicos-cr.png"
+         alt="Ilustración inspirada en la historia académica de Costa Rica"
+         class="math-image" />
+
+</section>
+
+<!-- INTEGRANTES DEL PROYECTO -->
+
+<section class="team-section" id="equipo">
+
+    <p class="team-subtitle">
+        PROGRAMACIÓN AVANZADA
+    </p>
+
+    <h2>Nuestro equipo</h2>
+
+    <p class="team-description">
+        Desarrolladores de Math Puzzle
+    </p>
+
+    <div class="team-container">
+
+        <div class="team-card">
+            <div class="team-avatar">01</div>
+            <h3>Yeik Pacheco Gutierrez</h3>
+            <p>El Moradito -40 Campeonatos Nacionales</p>
+        </div>
+
+        <div class="team-card">
+            <div class="team-avatar">02</div>
+            <h3>Jose Somarriba Conde</h3>
+            <p>Desarrollador</p>
+        </div>
+
+        <div class="team-card">
+            <div class="team-avatar">03</div>
+            <h3>David Altamar García</h3>
+            <p>Desarrollador</p>
+        </div>
+
+        <div class="team-card">
+            <div class="team-avatar">04</div>
+            <h3>Dereck</h3>
+            <p>Desarrollador</p>
+        </div>
+
+    </div>
+
+</section>
