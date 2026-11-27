@@ -1,0 +1,56 @@
+@{
+    ViewData["Title"] = "Resultados · Contrarreloj";
+
+    string jugador = ViewBag.Jugador?.ToString() ?? "Jugador";
+    int puntaje = Convert.ToInt32(ViewBag.Puntaje);
+    int aciertos = Convert.ToInt32(ViewBag.Aciertos);
+    int totalPreguntas = Convert.ToInt32(ViewBag.TotalPreguntas);
+    int porcentaje = Convert.ToInt32(ViewBag.Porcentaje);
+    int incorrectas = totalPreguntas - aciertos;
+
+    string mensaje = porcentaje switch
+    {
+        100 => "¡MÁS RÁPIDO QUE EL RELOJ!",
+        >= 70 => "¡EXCELENTE VELOCIDAD!",
+        >= 40 => "¡BUEN INTENTO!",
+        _ => "¡SIGUE PRACTICANDO!"
+    };
+}
+
+<section class="secuencias-pantalla">
+    <div class="secuencias-contenedor secuencias-resultados">
+        <header class="secuencias-resultado-encabezado">
+            <div class="secuencias-icono">⏱</div>
+            <p class="secuencias-etiqueta">MATH PUZZLE · DESAFÍO COMPLETADO</p>
+            <h1>RESULTADOS <span>FINALES</span></h1>
+            <p>¡Felicidades, <strong>@jugador</strong>! Has completado el Desafío Contrarreloj.</p>
+        </header>
+
+        <div class="secuencias-tarjeta secuencias-resultado-tarjeta">
+            <p class="secuencias-etiqueta">TU PUNTUACIÓN FINAL</p>
+            <div class="secuencias-puntaje-final">@puntaje <span>PTS</span></div>
+            <h2>@mensaje</h2>
+
+            <div class="secuencias-estadisticas">
+                <div><strong>@aciertos</strong><span>ACIERTOS</span></div>
+                <div><strong>@incorrectas</strong><span>FALLOS O TIEMPO AGOTADO</span></div>
+                <div><strong>@porcentaje%</strong><span>PRECISIÓN</span></div>
+            </div>
+
+            <div class="secuencias-progreso">
+                <div class="secuencias-progreso-texto">
+                    <span>RESPUESTAS CORRECTAS</span>
+                    <strong>@aciertos DE @totalPreguntas</strong>
+                </div>
+                <div class="secuencias-progreso-fondo">
+                    <div class="secuencias-progreso-barra" style="width: @porcentaje%"></div>
+                </div>
+            </div>
+
+            <div class="secuencias-acciones">
+                <a asp-controller="Contrarreloj" asp-action="Index" class="secuencias-boton">JUGAR DE NUEVO <span aria-hidden="true">→</span></a>
+                <a asp-controller="Home" asp-action="Index" class="secuencias-volver">VOLVER AL INICIO</a>
+            </div>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,141 @@
+@model MathPuzzle.Web.Models.Pregunta
+
+@{
+    ViewData["Title"] = "Contrarreloj";
+
+    int numeroPregunta = Convert.ToInt32(ViewBag.NumeroPregunta);
+    int totalPreguntas = Convert.ToInt32(ViewBag.TotalPreguntas);
+    int puntaje = Convert.ToInt32(ViewBag.Puntaje);
+    int segundosPorPregunta = Convert.ToInt32(ViewBag.SegundosPorPregunta);
+    int msRestantes = Convert.ToInt32(ViewBag.MsRestantes);
+    string jugador = ViewBag.Jugador?.ToString() ?? "Jugador";
+    string tipoOperacion = ViewBag.TipoOperacion?.ToString() ?? "Suma";
+    int nivel = numeroPregunta <= 4 ? 1 : numeroPregunta <= 7 ? 2 : 3;
+    double progreso = totalPreguntas > 0
+        ? (double)(numeroPregunta - 1) / totalPreguntas * 100
+        : 0;
+}
+
+<style>
+    /* Solo lo propio del Contrarreloj; el resto usa las clases secuencias-* */
+    .cr-tiempo { margin-bottom: 1.5rem; }
+    .cr-tiempo-barra {
+        width: 100%;
+        transition: background-color .3s !important;
+        background: #22c55e !important;
+    }
+    .cr-tiempo-barra.cr-medio { background: #f59e0b !important; }
+    .cr-tiempo-barra.cr-bajo { background: #ef4444 !important; }
+</style>
+
+<section class="secuencias-pantalla">
+    <div class="secuencias-contenedor secuencias-partida">
+        <header class="secuencias-encabezado">
+            <div>
+                <span class="secuencias-etiqueta">JUGADOR</span>
+                <h2>@jugador</h2>
+            </div>
+            <div class="secuencias-puntaje">
+                <span class="secuencias-etiqueta">PUNTUACIÓN</span>
+                <strong>@puntaje <small>PTS</small></strong>
+            </div>
+        </header>
+
+        <!-- Progreso de la partida -->
+        <div class="secuencias-progreso">
+            <div class="secuencias-progreso-texto">
+                <span>OPERACIÓN @numeroPregunta DE @totalPreguntas</span>
+                <span>NIVEL @nivel · @tipoOperacion.ToUpperInvariant()</span>
+            </div>
+            <div class="secuencias-progreso-fondo">
+                <div class="secuencias-progreso-barra" style="width: @progreso.ToString("0.##", System.Globalization.CultureInfo.InvariantCulture)%"></div>
+            </div>
+        </div>
+
+        <!-- Tiempo restante -->
+        <div class="secuencias-progreso cr-tiempo">
+            <div class="secuencias-progreso-texto">
+                <span>TIEMPO RESTANTE</span>
+                <span><strong id="textoTiempo">@segundosPorPregunta</strong> S</span>
+            </div>
+            <div class="secuencias-progreso-fondo">
+                <div id="barraTiempo" class="secuencias-progreso-barra cr-tiempo-barra"></div>
+            </div>
+        </div>
+
+        <div class="secuencias-tarjeta secuencias-pregunta">
+            <span class="secuencias-etiqueta">RESUELVE ANTES DE QUE SE ACABE EL TIEMPO</span>
+            <h1>@Model.Enunciado = ?</h1>
+            <p class="secuencias-instruccion">Selecciona el resultado correcto.</p>
+
+            <form id="formRespuesta" asp-controller="Contrarreloj" asp-action="Responder" method="post">
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="idPregunta" value="@Model.Id" />
+                <div class="secuencias-opciones">
+                    @for (int i = 0; i < Model.Opciones.Count; i++)
+                    {
+                        <button type="submit" class="secuencias-opcion" name="indiceRespuesta" value="@i">
+                            <span class="secuencias-opcion-letra">@((char)('A' + i))</span>
+                            <span>@Model.Opciones[i]</span>
+                            <span class="secuencias-flecha" aria-hidden="true">→</span>
+                        </button>
+                    }
+                </div>
+            </form>
+
+            <!-- Se envía solo cuando se acaba el tiempo (cuenta como fallo) -->
+            <form id="formTiempo" asp-controller="Contrarreloj" asp-action="Responder" method="post">
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="idPregunta" value="@Model.Id" />
+                <input type="hidden" name="indiceRespuesta" value="-1" />
+            </form>
+        </div>
+
+        <p class="secuencias-nota">Cada respuesta correcta suma 100 puntos. Tienes @segundosPorPregunta segundos por operación.</p>
+    </div>
+</section>
+
+@section Scripts {
+    <script>
+        (function () {
+            const totalMs = @(segundosPorPregunta * 1000);
+            const fin = Date.now() + @msRestantes;
+
+            const barra = document.getElementById("barraTiempo");
+            const texto = document.getElementById("textoTiempo");
+            const formRespuesta = document.getElementById("formRespuesta");
+            const formTiempo = document.getElementById("formTiempo");
+
+            let enviado = false;
+
+            formRespuesta.addEventListener("submit", function () {
+                enviado = true;
+                // Se desactivan después del envío para evitar doble clic.
+                setTimeout(function () {
+                    document.querySelectorAll(".secuencias-opcion").forEach(b => b.disabled = true);
+                }, 0);
+            });
+
+            function actualizar() {
+                const restanteMs = Math.max(0, fin - Date.now());
+
+                barra.style.width = (restanteMs / totalMs) * 100 + "%";
+                texto.textContent = Math.ceil(restanteMs / 1000);
+
+                barra.classList.toggle("cr-medio", restanteMs <= 8000 && restanteMs > 4000);
+                barra.classList.toggle("cr-bajo", restanteMs <= 4000);
+
+                if (restanteMs <= 0) {
+                    clearInterval(intervalo);
+                    if (!enviado) {
+                        enviado = true;
+                        formTiempo.submit();
+                    }
+                }
+            }
+
+            const intervalo = setInterval(actualizar, 100);
+            actualizar();
+        })();
+    </script>
+}

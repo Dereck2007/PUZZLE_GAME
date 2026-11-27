@@ -1,0 +1,50 @@
+@{
+    ViewData["Title"] = "Contrarreloj";
+}
+
+<section class="secuencias-pantalla">
+    <div class="secuencias-contenedor secuencias-inicio">
+        <div class="secuencias-presentacion">
+            <p class="secuencias-etiqueta">MATH PUZZLE · CÁLCULO RÁPIDO</p>
+            <h1>DESAFÍO <span>CONTRARRELOJ</span></h1>
+            <p class="secuencias-descripcion">
+                Resuelve sumas, restas y multiplicaciones sencillas antes de que se acabe el tiempo.
+            </p>
+            <div class="secuencias-caracteristicas">
+                <div><strong>10</strong><span>Operaciones</span></div>
+                <div><strong>15</strong><span>Segundos cada una</span></div>
+                <div><strong>100</strong><span>Puntos por acierto</span></div>
+            </div>
+        </div>
+
+        <div class="secuencias-tarjeta secuencias-formulario">
+            <div class="secuencias-icono">⏱</div>
+            <p class="secuencias-etiqueta">INICIA UN NUEVO DESAFÍO</p>
+            <h2>¿Listo para ganarle al reloj?</h2>
+            <p>Ingresa tu nombre para comenzar. Si se acaba el tiempo, la operación cuenta como fallada.</p>
+
+            @if (ViewBag.Error != null)
+            {
+                <div class="alert alert-danger" role="alert">@ViewBag.Error</div>
+            }
+
+            <form asp-controller="Contrarreloj" asp-action="Iniciar" method="post">
+                <div class="secuencias-campo">
+                    <label for="nombre">Nombre del jugador</label>
+                    <input type="text"
+                           id="nombre"
+                           name="nombre"
+                           maxlength="40"
+                           autocomplete="nickname"
+                           placeholder="Escribe tu nombre"
+                           required />
+                </div>
+                <button type="submit" class="secuencias-boton">
+                    COMENZAR DESAFÍO <span aria-hidden="true">→</span>
+                </button>
+            </form>
+
+            <a asp-controller="Home" asp-action="Index" class="secuencias-volver">← Volver al inicio</a>
+        </div>
+    </div>
+</section>
