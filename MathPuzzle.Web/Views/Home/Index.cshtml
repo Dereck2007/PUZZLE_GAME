@@ -79,6 +79,50 @@
     </div>
 </section>
 
+<!-- DESAFÍO CONTRARRELOJ -->
+
+<section class="secuencias-home" aria-labelledby="contrarreloj-home-titulo"
+         style="border-top: 1px solid rgba(196, 160, 106, 0.25);">
+    <div class="secuencias-home-contenido">
+        <p class="secuencias-home-etiqueta">
+            PON A PRUEBA TU VELOCIDAD
+        </p>
+
+        <h2 id="contrarreloj-home-titulo">
+            DESAFÍO <span>CONTRARRELOJ</span>
+        </h2>
+
+        <p class="secuencias-home-descripcion">
+            Resuelve sumas, restas y multiplicaciones antes de que se acabe el tiempo. Tienes 15 segundos por operación: piensa rápido y suma puntos.
+        </p>
+
+        <a asp-controller="Contrarreloj"
+           asp-action="Index"
+           class="secuencias-home-boton">
+            Comenzar desafío
+            <span aria-hidden="true">→</span>
+        </a>
+    </div>
+
+    <div class="secuencias-home-visual" aria-hidden="true">
+        <p>RESUELVE ANTES DE QUE SE ACABE EL TIEMPO</p>
+        <div class="secuencias-home-numeros">
+            <span>08</span>
+            <span>+</span>
+            <span>05</span>
+            <span class="secuencias-home-faltante">?</span>
+        </div>
+        <div class="secuencias-home-nivel">
+            <span>+</span>
+            <span class="secuencias-home-linea"></span>
+            <span>−</span>
+            <span class="secuencias-home-linea"></span>
+            <span>×</span>
+            <small>15 SEGUNDOS POR OPERACIÓN</small>
+        </div>
+    </div>
+</section>
+
 <section class="math-image-section">
 
     <img src="~/images/matematicos-cr.png"
